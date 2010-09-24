@@ -1,0 +1,4 @@
+#!/bin/sh
+mkdir data
+initdb -D data -E utf8 --no-locale -T simple
+mkdir data/tmp

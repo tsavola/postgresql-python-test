@@ -1,0 +1,3 @@
+#!/bin/sh
+export PYTHONPATH=$PWD
+exec postgres -D data -c unix_socket_directory=$PWD/data/tmp

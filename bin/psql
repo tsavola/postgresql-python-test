@@ -1,0 +1,5 @@
+#!/bin/sh
+export PGHOST=$PWD/data/tmp
+export PGUSER=user
+export PGDATABASE=db
+exec psql "$@"
