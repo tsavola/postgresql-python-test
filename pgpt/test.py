@@ -15,4 +15,4 @@ def test(s):
 
 @database.call
 def dbtest(s):
-	test(s)
+	return test(s)
