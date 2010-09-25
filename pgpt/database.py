@@ -1,25 +1,10 @@
 client = False
 
-def _open():
-	import postgresql
-	return postgresql.open("pq://localhost/")
-
-class Database(object):
-	def __init__(self):
-		self.conn = _open()
-		self.proc = self.conn.proc("pythoncall(text, text, bytea)")
-
-	def __enter__(self):
-		return self
-
-	def __exit__(self, exc_type, exc_val, exc_tb):
-		self.conn.close()
-
 def init():
 	global client
 	client = True
 
-	with _open() as conn:
+	with open() as conn:
 		conn.execute("""
 			CREATE OR REPLACE FUNCTION pythoncall (modname text, funcname text, params bytea)
 			RETURNS bytea AS $$
@@ -33,15 +18,20 @@ def init():
 			$$ LANGUAGE plpython3u""")
 
 def open():
-	return Database()
+	import postgresql
+	return postgresql.open("pq://localhost/")
 
 def call(func):
 	if client:
 		import pickle
 
-		def dbcall(db, *args, **kwargs):
+		def dbcall(*args, **kwargs):
 			params = pickle.dumps((args, kwargs))
-			result = db.proc(func.__module__, func.__name__, params)
+
+			with open() as db:
+				proc = db.proc("pythoncall(text, text, bytea)")
+				result = proc(func.__module__, func.__name__, params)
+
 			return pickle.loads(result)
 
 		return dbcall

@@ -7,14 +7,9 @@ from . import test
 
 def main():
 	print("client:", os.getpid())
-
-	with database.open() as db:
-		print("db-1:", test.getpid(db))
-
-		with database.open() as db2:
-			print("db-2:", test.getpid(db2))
-
-		print("version:", test.version(db))
+	print("db:", test.getpid())
+	print("db:", test.getpid())
+	print("version:", test.version())
 
 if __name__ == "__main__":
 	main()
