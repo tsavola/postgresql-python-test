@@ -4,11 +4,3 @@ set -e
 createuser -e -D -R -s user
 createdb -e -O user db
 createlang -e -d db plpython3u
-psql -e -d db -U user <<EOF
-  CREATE FUNCTION pythoncall (mod TEXT, func TEXT, arg TEXT) RETURNS text AS \$\$
-    import importlib
-    m = importlib.import_module(mod)
-    f = getattr(m, func)
-    return f(arg)
-  \$\$ LANGUAGE plpython3u;
-EOF

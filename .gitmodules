@@ -1,0 +1,3 @@
+[submodule "py-postgresql"]
+	path = py-postgresql
+	url = git://github.com/jwp/py-postgresql.git

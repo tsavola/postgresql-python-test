@@ -1,4 +1,5 @@
 #!/bin/sh
+export PYTHONPATH=py-postgresql
 export PGHOST=$PWD/data/tmp
 export PGUSER=user
 export PGDATABASE=db
