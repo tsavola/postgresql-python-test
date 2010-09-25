@@ -3,16 +3,18 @@ from . import store
 
 def main():
 	s = store.make_store()
-	print(test(s))
-	print(dbtest(s))
-	s.drop()
+	name = local(s)
+	value = remote(s.name)
+	print(value)
 
-def test(s):
+def local(s):
 	s["key1"] = "value1"
-	v = s["key1"]
+	s["key2"] = "value2"
 	del s["key1"]
-	return v
 
 @database.call
-def dbtest(s):
-	return test(s)
+def remote(name):
+	s = store.get_store(name)
+	value = s["key2"]
+	s.drop()
+	return value
